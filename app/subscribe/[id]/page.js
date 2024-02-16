@@ -1,11 +1,11 @@
 
 import PaymentBox from "@/components/Subscribe/PaymentBox";
-import { Box, Button, Typography } from "@mui/material";
+import { Box, Typography } from "@mui/material";
 import axios from "axios";
 
 const PaymentPage = async ({ params }) => {
-console.log(params)
-    const res = await axios.get(`http://localhost:5000/packages/${params?.id}`);
+
+    const res = await axios.get(`https://endgame-team-server.vercel.app/packages/${params?.id}`);
     const packages = await res.data;
     console.log(packages)
 
@@ -27,6 +27,7 @@ console.log(params)
                 borderRadius: '10px',
                 marginTop: '20px'
             }}>Monthly {packages.packageName} - {packages.price} BDT / 1 Month</Typography>
+
             <PaymentBox packages={packages}/>
             
         </Box>

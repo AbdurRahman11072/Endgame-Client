@@ -3,19 +3,28 @@
 "use client"
 // pages/video/[id].js
 import { useEffect, useState } from 'react';
-import React from 'react';
 
-import { FaRegStar } from "react-icons/fa6";
 import { Avatar } from '@mui/material';
+import { FaRegStar } from "react-icons/fa6";
 
 import VideoPlayer from '@/app/videos/videoPlayer';
 
-import Comments from "@/components/Comment/Comments"
+import Comments from "@/components/Comment/Comments";
+import Like from '../Like';
+
+import MainNavbar from '@/components/MainNavbar/MainNavbar';
+import axios from 'axios';
+import PlaylistButton from '../PlaylistButton';
+import Share from '../Share';
+import Suggest from '../Suggest';
 
 const VideoDetail = ({ params }) => {
   const { id } = params;
   const [videoData, setVideoData] = useState(null);
+  const [likeData, setLikeData] = useState(null);
+  console.log(likeData);
   console.log("chek", videoData)
+
   useEffect(() => {
     const fetchVideoDetails = async () => {
       try {
@@ -35,24 +44,47 @@ const VideoDetail = ({ params }) => {
     fetchVideoDetails();
   }, [id]);
 
+  
+  useEffect(() => {
+    const fetchData = async () => {
+      try {
+        const response = await axios.get(`https://endgame-team-server.vercel.app/like/${id}`);
+        const data = response.data;
+        setLikeData(data);
+      } catch (error) {
+        console.error('Error fetching data:', error);
+      }
+    };
+  
+    fetchData();
+  }, [id]);
+  
+
+
   if (!videoData) {
     // Render loading state or handle loading scenario
     return <p>Loading...</p>;
   }
 
   return (
-    <div className='w-full bg-gray-900 h-screen '>
-      <div className="max-w-screen-xl  pt-16 pl-12 bg-slate-950 mx-auto flex-row lg:flex gap-4">
+    <div className='w-full h-screen '>
+      <MainNavbar/>
+      <div className="max-w-screen-xl place-items-center mt-6 px-12 bg-slate-950  mx-auto flex-row lg:flex gap-4">
         <div className="md:col-span-1 lg:col-span-2">
           <VideoPlayer video={videoData.video.link} />
         </div>
-        <div className="md:col-span-1 lg:col-span-1 mt-7 pr-3  h-[580px]">
+        {/* <div className="md:col-span-1 lg:col-span-1 mt-7 pr-3  h-[580px]"> */}
           {/* <h2 className='text-center py-2 rounded-t-lg text-white bg-slate-900'>Suggested Video</h2> */}
 
-        </div>
+        {/* </div> */}
       </div>
       <div className=' bg-slate-950 h-[450px] max-w-screen-xl mx-auto pl-16'>
         <h1 className='tex-sm lg:text-3xl ml-4 text-white py-5 font-extrabold'>{videoData?.movieName}</h1>
+        <div className='flex ml-5 mb-2 flex-row gap-4 items-center md:flex-row lg:flex-row xl:flex-row 2xl:flex lg:items-center xl:items-center 2xl:items-center'>
+        <Like likeData={likeData} data={videoData}></Like>
+  <PlaylistButton data={videoData}></PlaylistButton>
+  <Share video={videoData.video.link} />
+</div>
         <div className='flex ml-4 items-center gap-2'>
           <FaRegStar className='text-green-600' />
           <p><span className='text-white'>9.6 (1.6k ratings).</span> <span className='text-green-600 font-bold'>Rate now</span></p>
@@ -79,7 +111,7 @@ const VideoDetail = ({ params }) => {
               </p>
             </h5>
           </div>
-          <div className='ml-5 mt-3 flex gap-3'>
+          <div className='ml-5 mt-3 flex flex-col md:flex-col lg:flex-col xl:flex-row 2xl:flex-row gap-3'>
             <div>
               <Avatar
                 alt="Remy Sharp"
@@ -110,7 +142,8 @@ const VideoDetail = ({ params }) => {
 
           {/* comment section */}
           <div className='w-full bg-slate-950 h-screen'>
-            <Comments videoId={id}/>
+            <Suggest></Suggest>
+            <Comments />
           </div>
         </div>
       </div>
