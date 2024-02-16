@@ -30,3 +30,11 @@ body {
     )
     rgb(var(--background-start-rgb));
 }
+
+
+
+/* Production level is delete. its do not need */
+.testColor{
+  color: #ededef,
+  
+}

@@ -7,7 +7,7 @@ const SubscribePage = () => {
     const [packageData,setPackageData]=useState([]);
 
     useEffect(()=>{
-        axios.get('https://endgame-team-server.vercel.app/packages')
+        axios.get('http://localhost:5000/packages')
         .then(res =>{
             setPackageData(res.data) 
         })
@@ -21,5 +21,4 @@ const SubscribePage = () => {
         </Box>
     );
 };
-
 export default SubscribePage;

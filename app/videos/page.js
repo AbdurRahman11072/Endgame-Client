@@ -1,8 +1,8 @@
 /* eslint-disable @next/next/no-img-element */
 /* eslint-disable @next/next/no-async-client-component */
 "use client";
+import { useState, useEffect } from 'react';
 import Link from 'next/link'; // Import Link from Next.js
-import { useEffect, useState } from 'react';
 
 const Video = () => {
     const [moviesData, setMoviesData] = useState([]);

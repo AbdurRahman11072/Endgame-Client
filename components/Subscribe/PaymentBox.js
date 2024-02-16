@@ -5,12 +5,13 @@ import axios from 'axios';
 
 
 const PaymentBox = ({ packages }) => {
-    const user = {email:'alauddinislam484@gmail.com'}
-    
-    packages.email = user?.email;
-    const handlePayment = () => {
+    console.log(packages)
+    const user = {email:'alauddinislam484@gmail.com'};;
+
+
+        const handlePayment = () => {
         console.log(packages)
-        axios.post(`https://endgame-team-server.vercel.app/payment?email=${user?.email}`, packages)
+        axios.post(`http://localhost:5000/payment?email=${user?.email}`, packages)
         .then(res =>{
             console.log(res.data)
             window.location.replace(res.data.url)
